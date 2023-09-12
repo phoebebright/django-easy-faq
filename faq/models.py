@@ -3,6 +3,9 @@ from django.db import models
 from django.utils.text import slugify
 from django.shortcuts import reverse
 
+if settings.USE_QUILL_EDITOR:
+    from django_quill_editor.fields import QuillField
+
 from . import snippets
 
 
@@ -37,9 +40,14 @@ class Question(models.Model):
             return reverse("faq:question_detail", args=(self.slug,))
 
 
+
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    answer = models.TextField()
+    if settings.USE_QUILL_EDITOR:
+        answer = models.TextField()
+    else:
+        answer = models.TextField()
+
     slug = models.SlugField(max_length=10, blank=True)
     helpful = models.IntegerField(default=0)
     not_helpful = models.IntegerField(default=0)
