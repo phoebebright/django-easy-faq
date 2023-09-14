@@ -44,7 +44,7 @@ class Question(models.Model):
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     if settings.USE_QUILL_EDITOR:
-        answer = models.QuillField()
+        answer = QuillField()
     else:
         answer = models.TextField()
 
@@ -59,7 +59,10 @@ class Answer(models.Model):
         return AnswerHelpful.objects.filter(answer=self, vote=False).count()
 
     def __str__(self):
-        return self.answer
+        if settings.USE_QUILL_EDITOR:
+            return self.answer.plain[:50]
+        else:
+            return self.answer[:50]
 
     class Meta:
         order_with_respect_to = 'question'
