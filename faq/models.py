@@ -4,7 +4,7 @@ from django.utils.text import slugify
 from django.shortcuts import reverse
 
 if settings.USE_QUILL_EDITOR:
-    from django_quill_editor.fields import QuillField
+    from django_quill.fields import QuillField
 
 from . import snippets
 
@@ -44,7 +44,7 @@ class Question(models.Model):
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     if settings.USE_QUILL_EDITOR:
-        answer = models.TextField()
+        answer = models.QuillField()
     else:
         answer = models.TextField()
 
