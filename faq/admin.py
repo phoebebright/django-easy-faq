@@ -2,6 +2,9 @@ from django.contrib import admin
 from .models import *
 from django.conf import settings
 
+if settings.USE_QUILL_EDITOR:
+    from django_quill.fields import QuillFieldAdminMixin
+
 # Register your models here.
 
 class AnswerHelpfulAdmin(admin.ModelAdmin):
@@ -16,7 +19,7 @@ class QuestionHelpfulAdmin(admin.ModelAdmin):
     search_fields = ['question', "user"]
 
 
-class AnswerAdmin(admin.ModelAdmin):
+class AnswerAdmin(QuillFieldAdminMixin, admin.ModelAdmin):
     list_display = ("answer", "question", "helpful", "not_helpful")
     list_filter = ('helpful', "not_helpful")
     search_fields = ['answer', "question"]
